@@ -5,17 +5,12 @@ import json
 import os
 import socket
 from pprint import pprint
+from optparse import OptionParser
 
 app = Flask("relayControl")
 relays = {}
 
-def load_relays(cfg_file=None):
-    if not cfg_file:
-        hostname = socket.gethostname()
-        cfg_file = "settings/%s.json" % hostname
-        if not os.path.isfile(cfg_file):
-            cfg_file = "settings/default.json"
-
+def load_relays(cfg_file):
     cfg_data = open(cfg_file).read()
     data = json.loads(cfg_data)
 
@@ -88,6 +83,22 @@ def set_relay(relay_id):
 
     return json.dumps(relay.to_hash())
 
+from optparse import OptionParser
+
+parser = OptionParser()
+parser.add_option('-H', "--host", dest="host", metavar="HOST",
+                  default="0.0.0.0",
+                  help="the hostname to listen on. Set this to '0.0.0.0' to have the server available externally as well.")
+parser.add_option('-p', "--port", dest="port", type="int", metavar="PORT",
+                  default=8080,
+                  help="the port to listen on.")
+parser.add_option('-c', "--cfg", dest="cfg_file", metavar="FILE",
+                  default="settings/default.json",
+                  help="config file in JSON format.")
+
 if __name__ == "__main__":
-    load_relays()
-    app.run()
+    (options, args) = parser.parse_args()
+
+    load_relays(options.cfg_file)
+
+    app.run(host=options.host, port=options.port)
