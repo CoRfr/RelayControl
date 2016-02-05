@@ -13,7 +13,7 @@ class RelayRpi(Relay):
         GPIO.setup(self.gpio, GPIO.OUT)
 
     def get_state(self):
-        return GPIO.input(gpio)
+        return GPIO.input(self.gpio)
 
     def set_state(self, state):
         if state == "true":
@@ -21,4 +21,4 @@ class RelayRpi(Relay):
         else:
             state = False
 
-        GPIO.output(gpio, state)
+        GPIO.output(self.gpio, state)

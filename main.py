@@ -95,10 +95,13 @@ parser.add_option('-p', "--port", dest="port", type="int", metavar="PORT",
 parser.add_option('-c', "--cfg", dest="cfg_file", metavar="FILE",
                   default="settings/default.json",
                   help="config file in JSON format.")
+parser.add_option('-d', "--debug", dest="debug",
+                  default=False,
+                  help="debug mode")
 
 if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
     load_relays(options.cfg_file)
 
-    app.run(host=options.host, port=options.port)
+    app.run(host=options.host, port=options.port, debug=options.debug)
