@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-from flask import Flask, request
+from flask import Flask, request, url_for, escape
 import json
 import os
 import socket
@@ -50,9 +50,34 @@ def load_relays(cfg_file):
 
     return
 
+def list_routes():
+    import urllib
+    output = []
+    routes = []
+    for rule in app.url_map.iter_rules():
+
+        options = {}
+        for arg in rule.arguments:
+            options[arg] = "_%s_" % arg
+
+        methods = ','.join(rule.methods)
+        url = url_for(rule.endpoint, **options)
+        route = {
+            "url": url,
+            "methods": methods,
+            "endpoint": rule.endpoint
+        }
+        routes.append(route)
+    
+    return routes
+
 @app.route('/')
 def help():
-    return "RelayControl"
+    output = "<html><body><h1>RelayControl</h1><br/><table>"
+    for route in list_routes():
+        output += "<tr><td><pre>%s</pre></td><td>%s</td><td>%s</td></tr>" % (escape(route["url"]), route["methods"], route["endpoint"])
+    output += "</table></body></html>"
+    return output
 
 @app.route('/relays')
 def list_relays():
