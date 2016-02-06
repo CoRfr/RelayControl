@@ -127,7 +127,6 @@ parser.add_option('-p', "--port", dest="port", type="int", metavar="PORT",
                   default=8080,
                   help="the port to listen on.")
 parser.add_option('-c', "--cfg", dest="cfg_file", metavar="FILE",
-                  default="settings/default.json",
                   help="config file in JSON format.")
 parser.add_option('-d', "--debug", dest="debug", action="store_true",
                   default=False,
@@ -136,6 +135,10 @@ parser.add_option('-d', "--debug", dest="debug", action="store_true",
 if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
-    load_relays(options.cfg_file)
+    cfg_file = options.cfg_file
+    if not cfg_file:
+        cfg_file = os.path.join( os.path.dirname( os.path.realpath(__file__) ), "settings/default.json")
+
+    load_relays(cfg_file)
 
     app.run(host=options.host, port=options.port, debug=options.debug)
