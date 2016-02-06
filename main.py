@@ -7,7 +7,7 @@ import socket
 from pprint import pprint
 from optparse import OptionParser
 
-app = Flask("relayControl")
+app = Flask(__name__)
 relays = {}
 
 def load_relays(cfg_file):
