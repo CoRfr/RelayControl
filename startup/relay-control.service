@@ -1,0 +1,12 @@
+[Unit]
+Description=Relay Control webservice
+After=network.target
+
+[Service]
+ExecStart=/root/RelayControl/main.py
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
