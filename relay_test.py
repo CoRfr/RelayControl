@@ -11,7 +11,7 @@ class RelayTest(Relay):
         return self.state
 
     def set_state(self, state):
-        if state == "true":
+        if state == True or state == "true":
             self.state = True
         else:
             self.state = False

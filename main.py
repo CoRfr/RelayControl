@@ -76,12 +76,21 @@ def set_relay(relay_id):
 
     relay = relays[relay_id]
 
-    if not request.form['state']:
-        return "Invalid Request"
-
     relay.set_state(request.form['state'])
 
     return json.dumps(relay.to_hash())
+
+@app.route('/relays/<relay_id>/toggle')
+def toggle_relay(relay_id):
+    if not relay_id in relays:
+        return ""
+
+    relay = relays[relay_id]
+
+    relay.toggle_state()
+
+    return json.dumps(relay.to_hash())
+
 
 from optparse import OptionParser
 
@@ -95,7 +104,7 @@ parser.add_option('-p', "--port", dest="port", type="int", metavar="PORT",
 parser.add_option('-c', "--cfg", dest="cfg_file", metavar="FILE",
                   default="settings/default.json",
                   help="config file in JSON format.")
-parser.add_option('-d', "--debug", dest="debug",
+parser.add_option('-d', "--debug", dest="debug", action="store_true",
                   default=False,
                   help="debug mode")
 

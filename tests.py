@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import os
 import unittest
 import tempfile
@@ -24,6 +26,12 @@ class RelayControlTestCase(unittest.TestCase):
         rv = self.app.post('/relays/3', data=dict(state="false"))
         assert '{"state": false, "id": "3"}' in rv.data
         rv = self.app.post('/relays/3', data=dict(state="true"))
+        assert '{"state": true, "id": "3"}' in rv.data
+
+    def test_toggle_relay(self):
+        rv = self.app.post('/relays/3', data=dict(state="false"))
+        assert '{"state": false, "id": "3"}' in rv.data
+        rv = self.app.get('/relays/3/toggle')
         assert '{"state": true, "id": "3"}' in rv.data
 
 if __name__ == '__main__':
