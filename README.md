@@ -10,12 +10,13 @@ Support for other GPIO control (sysfs, MRAA, ...) can be easily implemented, jus
 
 ## REST API
 
-| Method | Request                     | Action |
-| GET    | /                           | Help: list all routes |
-| GET    | /relays                     | List all relays and their states |
-| GET    | /relays/<relay_id>          | Get state for one relay |
-| POST   | /relays/<relay_id>          | Set state for one relay |
-| GET    | /relays/<relay_id>/toggle   | Toggle the state of one relay |
+| Method | Request                       | Action                           |
+|--------|-------------------------------|----------------------------------|
+| GET    | /                             | Help: list all routes            |
+| GET    | /relays                       | List all relays and their states |
+| GET    | /relays/\<relay_id\>          | Get state for one relay          |
+| POST   | /relays/\<relay_id\>          | Set state for one relay          |
+| GET    | /relays/\<relay_id\>/toggle   | Toggle the state of one relay    |
 
 ## Sample usage
 
