@@ -2,7 +2,6 @@
 
 import os
 import unittest
-import tempfile
 
 import main
 
@@ -26,6 +25,12 @@ class RelayControlTestCase(unittest.TestCase):
         rv = self.app.post('/relays/3', data=dict(state="false"))
         assert '{"state": false, "id": "3"}' in rv.data
         rv = self.app.post('/relays/3', data=dict(state="true"))
+        assert '{"state": true, "id": "3"}' in rv.data
+
+    def test_set_relay_json(self):
+        rv = self.app.post('/relays/3', data='{"state": false}', content_type='application/json')
+        assert '{"state": false, "id": "3"}' in rv.data
+        rv = self.app.post('/relays/3', data='{"state": true}', content_type='application/json')
         assert '{"state": true, "id": "3"}' in rv.data
 
     def test_toggle_relay(self):

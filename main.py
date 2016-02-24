@@ -42,7 +42,7 @@ def load_relays(cfg_file):
         elif relay_type == "test":
             from relay_test import RelayTest
             gpio = info["gpio"]
-            relay = RelayTest(relay_id, int(gpio))            
+            relay = RelayTest(relay_id, int(gpio))
         else:
             raise Exception("Unknown relay type %s" % relay_type)
 
@@ -68,7 +68,7 @@ def list_routes():
             "endpoint": rule.endpoint
         }
         routes.append(route)
-    
+
     return routes
 
 @app.route('/')
@@ -100,8 +100,22 @@ def set_relay(relay_id):
         return ""
 
     relay = relays[relay_id]
+    next_state = False
 
-    relay.set_state(request.form['state'])
+    if 'state' in request.form:
+        next_state = request.form['state']
+    elif 'Content-Type' in request.headers:
+        if request.headers['Content-Type'] == 'application/json':
+             data = json.loads(request.data)
+             if not 'state' in data.keys():
+                 raise("Invalid JSON request")
+             next_state = data['state']
+        else:
+             raise Exception("Unknown content type")
+    else:
+        raise Exception("Invalid request")
+
+    relay.set_state(next_state)
 
     return json.dumps(relay.to_hash())
 
