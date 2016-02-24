@@ -16,7 +16,7 @@ class RelayRpi(Relay):
         return GPIO.input(self.gpio)
 
     def set_state(self, state):
-        if state == "true":
+        if state == True or state == "true":
             state = True
         else:
             state = False
